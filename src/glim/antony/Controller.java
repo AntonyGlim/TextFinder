@@ -55,44 +55,50 @@ public class Controller {
 //        if (rootDirectory != null) rootItem.setValue(rootDirectory.getName());
 //        rootItem.getChildren().addAll(directories);
 
-
-
-        TreeItem<Path> rootItem = getTreeItem(rootDirectory.getAbsolutePath(), getFiles(pathField.getText(), extensionField.getText(), searchArea.getText()));
+        TreeItem<Path> rootItem = new TreeItem<>();
+        List<Path> paths = getFiles(Paths.get(pathField.getText()), extensionField.getText(), searchArea.getText());
+        List<TreeItem<Path>> treeItems = new ArrayList<>();
+        for (Path path : paths) {
+            treeItems.add(new TreeItem<>(path));
+        }
+        rootItem.getChildren().addAll(treeItems);
         directoriesTree.setRoot(rootItem);
     }
 
-    public List<TreeItem<Path>> buildDirectoriesTree() {
-        List<Path> list = getFiles(pathField.getText(), extensionField.getText(), searchArea.getText());
-        List<TreeItem<Path>> treeItems = new ArrayList<>();
-        list.forEach(f -> treeItems.add(new TreeItem<>(f)));
-        return treeItems;
-    }
+//
+//    public List<TreeItem<Path>> buildDirectoriesTree() {
+//        List<Path> list = getFiles(pathField.getText(), extensionField.getText(), searchArea.getText());
+//        List<TreeItem<Path>> treeItems = new ArrayList<>();
+//        list.forEach(f -> treeItems.add(new TreeItem<>(f)));
+//        return treeItems;
+//    }
+//
+//    public TreeItem<Path> getTreeItem(Path root, List<Path> files) {
+//        String[] tokens = root.split("/");
+//        String rootName = tokens[tokens.length - 1];
+//        TreeItem<Path> item = new TreeItem<Path>(rootName);
+//        item.getChildren().addAll(findAllInDirectories(root, files));
+//        return item;
+//    }
+//
+//    public List<TreeItem<Path>> findAllInDirectories(String root, List<Path> files) {
+//        List<TreeItem<Path>> treeItems = new ArrayList<>();
+//        Set<Path> set = new HashSet<>();
+//        for (Path f : files) {
+//            set.add(f);
+//        }
+//        for (Path p : set) {
+//            treeItems.add(new TreeItem<>(p));
+//        }
+//        return treeItems;
+//    }
 
-    public TreeItem<Path> getTreeItem(Path root, List<Path> files) {
-        String[] tokens = root.split("/");
-        String rootName = tokens[tokens.length - 1];
-        TreeItem<Path> item = new TreeItem<Path>(rootName);
-        item.getChildren().addAll(findAllInDirectories(root, files));
-        return item;
-    }
 
-    public List<TreeItem<Path>> findAllInDirectories(String root, List<Path> files) {
-        List<TreeItem<Path>> treeItems = new ArrayList<>();
-        Set<Path> set = new HashSet<>();
-        for (Path f : files) {
-            set.add(f);
-        }
-        for (Path p : set) {
-            treeItems.add(new TreeItem<>(p));
-        }
-        return treeItems;
-    }
-
-    public List<Path> getFiles(String path, String extension, String searchString) {
+    public List<Path> getFiles(Path path, String extension, String searchString) {
         List<Path> files = new ArrayList<>();
-        try (Stream<Path> walk = Files.walk(Paths.get(path))) {
+        try (Stream<Path> walk = Files.walk(path)) {
             files = walk
-                    .filter(f -> f.endsWith(extension))
+                    .filter(f -> f.toString().endsWith(extension))
                     .filter(f -> isFileContains(f, searchString))
                     .collect(Collectors.toList());
             files.forEach(System.out::println); //todo delete this
@@ -102,6 +108,7 @@ public class Controller {
         }
         return files;
     }
+
 
     private boolean isFileContains(Path path, String searchString) {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(path.toFile())))) {
