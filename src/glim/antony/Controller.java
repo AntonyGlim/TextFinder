@@ -36,6 +36,7 @@ public class Controller {
     TreeView directoriesTree;
 
     private File rootDirectory;
+    private TreeItem<Path> item = new TreeItem<>();
 
     public void browse() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -55,14 +56,20 @@ public class Controller {
 //        if (rootDirectory != null) rootItem.setValue(rootDirectory.getName());
 //        rootItem.getChildren().addAll(directories);
 
-        TreeItem<Path> rootItem = new TreeItem<>();
-        List<Path> paths = getFiles(Paths.get(pathField.getText()), extensionField.getText(), searchArea.getText());
-        List<TreeItem<Path>> treeItems = new ArrayList<>();
-        for (Path path : paths) {
-            treeItems.add(new TreeItem<>(path));
+//        List<Path> paths = getFiles(Paths.get(pathField.getText()), extensionField.getText(), searchArea.getText());
+//        List<TreeItem<Path>> treeItems = new ArrayList<>();
+//        for (Path path : paths) {
+//            treeItems.add(new TreeItem<>(path));
+//        }
+
+        TreeItem<Path> rootItem = new TreeItem<>(Paths.get(pathField.getText()).getFileName());
+        try {
+            getFileTreeByRecursion(Paths.get(pathField.getText()), item);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        rootItem.getChildren().addAll(treeItems);
-        directoriesTree.setRoot(rootItem);
+//        rootItem.getChildren().addAll(treeListItemsList.get(0));
+        directoriesTree.setRoot(item);
     }
 
 //
@@ -93,6 +100,14 @@ public class Controller {
 //        return treeItems;
 //    }
 
+    public void getFileTreeByRecursion(Path root, TreeItem<Path> item) throws IOException {
+        File folder = root.toFile();
+        for (File file : folder.listFiles()) {
+            TreeItem<Path> treeItem = new TreeItem<>(file.toPath());
+            item.getChildren().add(treeItem);
+            if (file.isDirectory()) getFileTreeByRecursion(file.toPath(), treeItem);
+        }
+    }
 
     public List<Path> getFiles(Path path, String extension, String searchString) {
         List<Path> files = new ArrayList<>();
