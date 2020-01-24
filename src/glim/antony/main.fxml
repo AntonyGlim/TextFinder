@@ -11,12 +11,12 @@
     <children>
       <Pane layoutX="14.0" layoutY="20.0" prefHeight="57.0" prefWidth="634.0" style="-fx-background-color: fafafa; -fx-background-radius: 5;">
          <children>
-              <TextField fx:id="pathField" editable="false" layoutX="8.0" layoutY="16.0" prefHeight="26.0" prefWidth="402.0" promptText="Select directory..." />
-            <TextField fx:id="extensionField" layoutX="419.0" layoutY="16.0" prefHeight="26.0" prefWidth="62.0" text=".log" />
-              <Button fx:id="browse" layoutX="490.0" layoutY="16.0" mnemonicParsing="false" onAction="#browse" prefHeight="26.0" prefWidth="129.0" text="Select" />
+              <TextField fx:id="pathField" editable="false" layoutX="8.0" layoutY="16.0" prefHeight="26.0" prefWidth="402.0" promptText="Select directory..." text="/home/glim/repo/TextFinder/test" />
+            <TextField fx:id="extensionField" layoutX="419.0" layoutY="16.0" prefHeight="26.0" prefWidth="62.0" promptText=".txt" text=".log" />
+              <Button fx:id="browse" layoutX="490.0" layoutY="16.0" mnemonicParsing="false" onAction="#browse" prefHeight="26.0" prefWidth="129.0" text="Open folder" />
          </children>
       </Pane>
-        <TreeView fx:id="directoriesTree" layoutX="14.0" layoutY="99.0" prefHeight="580.0" prefWidth="196.0" />
+        <TreeView fx:id="directoriesTree" layoutX="14.0" layoutY="99.0" onMouseClicked="#displayFile" prefHeight="580.0" prefWidth="196.0" />
         <TextArea fx:id="fileTextArea" editable="false" layoutX="220.0" layoutY="99.0" prefHeight="580.0" prefWidth="1068.0" promptText="File text..." />
       <Pane layoutX="652.0" layoutY="20.0" prefHeight="57.0" prefWidth="634.0" style="-fx-background-color: fafafa; -fx-background-radius: 5;">
          <children>

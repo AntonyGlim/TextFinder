@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.DirectoryChooser;
 
 import java.io.*;
@@ -62,12 +63,25 @@ public class Controller {
         showDirectoriesTree();
     }
 
-    public void displayFile(){
-
+    public void displayFile(MouseEvent mouseClick){
+        if (mouseClick.getClickCount() == 2){
+            TreeItem<Path> item = (TreeItem<Path>)directoriesTree.getSelectionModel().getSelectedItem();
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(item.getValue().toFile())))) {
+                fileTextArea.clear();
+                String strLine;
+                while ((strLine = reader.readLine()) != null) {
+                    fileTextArea.appendText(strLine + "\n");
+                }
+                fileTextArea.selectRange(fileTextArea.getText().indexOf(searchString), fileTextArea.getText().indexOf(searchString) + searchString.length()); //todo delete this
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void showDirectoriesTree() {
-        TreeItem<Path> item = new TreeItem<>();
+        TreeItem<Path> item = new TreeItem<>(rootDirectory.toPath(), new ImageView(closeFolder));
+        item.setExpanded(true);
         try {
             getFileTreeByRecursion(Paths.get(pathField.getText()), item);
         } catch (IOException e) {
@@ -81,6 +95,7 @@ public class Controller {
         File folder = root.toFile();
         for (File file : folder.listFiles()) {
             TreeItem<Path> treeItem = new TreeItem<>(file.toPath());
+            treeItem.setExpanded(true);
             if (file.isDirectory()) {
                 treeItem.setGraphic(new ImageView(closeFolder));
                 item.getChildren().add(treeItem);
@@ -111,10 +126,8 @@ public class Controller {
 
     private boolean isFileContains(Path path, String searchString) {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(path.toFile())))) {
-            String strLine; //todo delete this
-            fileTextArea.clear(); //todo delete this
+            String strLine;
             while ((strLine = reader.readLine()) != null) {
-                fileTextArea.appendText(strLine + "\n"); //todo delete this
                 if (strLine.contains(searchString)) return true;
             }
         } catch (IOException e) {
