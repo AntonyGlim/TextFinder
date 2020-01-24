@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TreeView?>
@@ -9,15 +8,15 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="glim.antony.Controller">
     <children>
-        <TextField fx:id="path" editable="false" layoutX="23.0" layoutY="47.0" prefHeight="26.0" prefWidth="545.0" promptText="Choose directory..." />
-        <Button fx:id="browse" layoutX="581.0" layoutY="47.0" mnemonicParsing="false" onAction="#browse" prefHeight="26.0" prefWidth="129.0" text="Browse" />
-        <TreeView layoutX="23.0" layoutY="90.0" prefHeight="492.0" prefWidth="196.0" />
-        <TextArea layoutX="581.0" layoutY="90.0" prefHeight="60.0" prefWidth="129.0" />
-        <Button layoutX="715.0" layoutY="90.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="62.0" text="Find" />
+        <TextField fx:id="pathField" editable="false" layoutX="23.0" layoutY="47.0" prefHeight="26.0" prefWidth="545.0" promptText="Choose directory..." />
+        <Button fx:id="browse" layoutX="651.0" layoutY="47.0" mnemonicParsing="false" onAction="#browse" prefHeight="26.0" prefWidth="129.0" text="Browse" />
+        <TreeView fx:id="directoriesTree" layoutX="23.0" layoutY="90.0" prefHeight="492.0" prefWidth="196.0" />
+        <TextArea fx:id="searchArea" layoutX="581.0" layoutY="90.0" prefHeight="60.0" prefWidth="129.0" />
+        <Button fx:id="find" layoutX="715.0" layoutY="90.0" mnemonicParsing="false" onAction="#find" prefHeight="60.0" prefWidth="62.0" text="Find" />
         <TextArea editable="false" layoutX="230.0" layoutY="90.0" prefHeight="492.0" prefWidth="339.0" />
-        <ComboBox layoutX="716.0" layoutY="47.0" prefHeight="26.0" prefWidth="62.0" />
         <Button layoutX="581.0" layoutY="165.0" mnemonicParsing="false" prefHeight="14.0" prefWidth="62.0" text="Prev." />
         <Button layoutX="715.0" layoutY="165.0" mnemonicParsing="false" prefHeight="14.0" prefWidth="62.0" text="Next" />
         <Button layoutX="648.0" layoutY="165.0" mnemonicParsing="false" prefHeight="14.0" prefWidth="62.0" text="Sel. All" />
+      <TextField fx:id="extensionField" layoutX="581.0" layoutY="47.0" prefHeight="26.0" prefWidth="62.0" promptText=".log" text=".log" />
     </children>
 </AnchorPane>
