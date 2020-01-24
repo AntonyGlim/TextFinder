@@ -33,6 +33,9 @@ public class Controller {
     TextArea searchArea;
 
     @FXML
+    TextArea fileTextArea;
+
+    @FXML
     TreeView directoriesTree;
 
     private File rootDirectory;
@@ -52,6 +55,10 @@ public class Controller {
         extension = extensionField.getText();
         searchString = searchArea.getText();
         showDirectoriesTree();
+    }
+
+    public void displayFile(){
+
     }
 
     public void showDirectoriesTree() {
@@ -97,8 +104,10 @@ public class Controller {
 
     private boolean isFileContains(Path path, String searchString) {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(path.toFile())))) {
-            String strLine;
+            String strLine; //todo delete this
+            fileTextArea.clear(); //todo delete this
             while ((strLine = reader.readLine()) != null) {
+                fileTextArea.appendText(strLine + "\n"); //todo delete this
                 if (strLine.contains(searchString)) return true;
             }
         } catch (IOException e) {

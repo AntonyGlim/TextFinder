@@ -5,18 +5,27 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="glim.antony.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="glim.antony.Controller">
     <children>
-        <TextField fx:id="pathField" editable="false" layoutX="23.0" layoutY="47.0" prefHeight="26.0" prefWidth="545.0" promptText="Choose directory..." />
-        <Button fx:id="browse" layoutX="651.0" layoutY="47.0" mnemonicParsing="false" onAction="#browse" prefHeight="26.0" prefWidth="129.0" text="Browse" />
-        <TreeView fx:id="directoriesTree" layoutX="23.0" layoutY="90.0" prefHeight="492.0" prefWidth="196.0" />
-        <TextArea fx:id="searchArea" layoutX="581.0" layoutY="90.0" prefHeight="60.0" prefWidth="129.0" />
-        <Button fx:id="find" layoutX="715.0" layoutY="90.0" mnemonicParsing="false" onAction="#find" prefHeight="60.0" prefWidth="62.0" text="Find" />
-        <TextArea editable="false" layoutX="230.0" layoutY="90.0" prefHeight="492.0" prefWidth="339.0" />
-        <Button layoutX="581.0" layoutY="165.0" mnemonicParsing="false" prefHeight="14.0" prefWidth="62.0" text="Prev." />
-        <Button layoutX="715.0" layoutY="165.0" mnemonicParsing="false" prefHeight="14.0" prefWidth="62.0" text="Next" />
-        <Button layoutX="648.0" layoutY="165.0" mnemonicParsing="false" prefHeight="14.0" prefWidth="62.0" text="Sel. All" />
-      <TextField fx:id="extensionField" layoutX="581.0" layoutY="47.0" prefHeight="26.0" prefWidth="62.0" text=".log" />
+      <Pane layoutX="14.0" layoutY="20.0" prefHeight="57.0" prefWidth="634.0" style="-fx-background-color: fafafa; -fx-background-radius: 5;">
+         <children>
+              <TextField fx:id="pathField" editable="false" layoutX="8.0" layoutY="16.0" prefHeight="26.0" prefWidth="402.0" promptText="Select directory..." />
+            <TextField fx:id="extensionField" layoutX="419.0" layoutY="16.0" prefHeight="26.0" prefWidth="62.0" text=".log" />
+              <Button fx:id="browse" layoutX="490.0" layoutY="16.0" mnemonicParsing="false" onAction="#browse" prefHeight="26.0" prefWidth="129.0" text="Select" />
+         </children>
+      </Pane>
+        <TreeView fx:id="directoriesTree" layoutX="14.0" layoutY="99.0" prefHeight="580.0" prefWidth="196.0" />
+        <TextArea fx:id="fileTextArea" editable="false" layoutX="220.0" layoutY="99.0" prefHeight="580.0" prefWidth="1068.0" promptText="File text..." />
+      <Pane layoutX="652.0" layoutY="20.0" prefHeight="57.0" prefWidth="634.0" style="-fx-background-color: fafafa; -fx-background-radius: 5;">
+         <children>
+              <TextArea fx:id="searchArea" layoutX="12.0" layoutY="8.0" prefHeight="42.0" prefWidth="402.0" />
+              <Button fx:id="find" layoutX="420.0" layoutY="8.0" mnemonicParsing="false" onAction="#find" prefHeight="42.0" prefWidth="62.0" text="Find" />
+              <Button layoutX="489.0" layoutY="8.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="35.0" text="&lt;" />
+              <Button layoutX="588.0" layoutY="8.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="35.0" text="&gt;" />
+              <Button layoutX="532.0" layoutY="8.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="48.0" text="ALL" />
+         </children>
+      </Pane>
     </children>
 </AnchorPane>
