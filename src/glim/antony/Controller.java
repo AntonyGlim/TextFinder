@@ -36,7 +36,8 @@ public class Controller {
     TreeView directoriesTree;
 
     private File rootDirectory;
-    private TreeItem<Path> item = new TreeItem<>();
+    private String extension = ".log";
+    private String searchString = "";
 
     public void browse() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -48,81 +49,50 @@ public class Controller {
     }
 
     public void find() {
+        extension = extensionField.getText();
+        searchString = searchArea.getText();
         showDirectoriesTree();
     }
 
     public void showDirectoriesTree() {
-//        List<TreeItem<String>> directories = buildDirectoriesTree();
-//        if (rootDirectory != null) rootItem.setValue(rootDirectory.getName());
-//        rootItem.getChildren().addAll(directories);
-
-//        List<Path> paths = getFiles(Paths.get(pathField.getText()), extensionField.getText(), searchArea.getText());
-//        List<TreeItem<Path>> treeItems = new ArrayList<>();
-//        for (Path path : paths) {
-//            treeItems.add(new TreeItem<>(path));
-//        }
-
-        TreeItem<Path> rootItem = new TreeItem<>(Paths.get(pathField.getText()).getFileName());
+        TreeItem<Path> item = new TreeItem<>();
         try {
             getFileTreeByRecursion(Paths.get(pathField.getText()), item);
         } catch (IOException e) {
             e.printStackTrace();
         }
-//        rootItem.getChildren().addAll(treeListItemsList.get(0));
         directoriesTree.setRoot(item);
     }
 
-//
-//    public List<TreeItem<Path>> buildDirectoriesTree() {
-//        List<Path> list = getFiles(pathField.getText(), extensionField.getText(), searchArea.getText());
-//        List<TreeItem<Path>> treeItems = new ArrayList<>();
-//        list.forEach(f -> treeItems.add(new TreeItem<>(f)));
-//        return treeItems;
-//    }
-//
-//    public TreeItem<Path> getTreeItem(Path root, List<Path> files) {
-//        String[] tokens = root.split("/");
-//        String rootName = tokens[tokens.length - 1];
-//        TreeItem<Path> item = new TreeItem<Path>(rootName);
-//        item.getChildren().addAll(findAllInDirectories(root, files));
-//        return item;
-//    }
-//
-//    public List<TreeItem<Path>> findAllInDirectories(String root, List<Path> files) {
-//        List<TreeItem<Path>> treeItems = new ArrayList<>();
-//        Set<Path> set = new HashSet<>();
-//        for (Path f : files) {
-//            set.add(f);
-//        }
-//        for (Path p : set) {
-//            treeItems.add(new TreeItem<>(p));
-//        }
-//        return treeItems;
-//    }
 
     public void getFileTreeByRecursion(Path root, TreeItem<Path> item) throws IOException {
         File folder = root.toFile();
         for (File file : folder.listFiles()) {
             TreeItem<Path> treeItem = new TreeItem<>(file.toPath());
-            item.getChildren().add(treeItem);
-            if (file.isDirectory()) getFileTreeByRecursion(file.toPath(), treeItem);
+            if (file.isDirectory()) {
+                item.getChildren().add(treeItem);
+                getFileTreeByRecursion(file.toPath(), treeItem);
+            } else if (file.toString().endsWith(extension) && isFileContains(file.toPath(), searchString)){
+                item.getChildren().add(treeItem);
+            }
         }
     }
 
-    public List<Path> getFiles(Path path, String extension, String searchString) {
-        List<Path> files = new ArrayList<>();
-        try (Stream<Path> walk = Files.walk(path)) {
-            files = walk
-                    .filter(f -> f.toString().endsWith(extension))
-                    .filter(f -> isFileContains(f, searchString))
-                    .collect(Collectors.toList());
-            files.forEach(System.out::println); //todo delete this
-            return files;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return files;
-    }
+    //This is work correctly
+//    public List<Path> getFiles(Path path, String extension, String searchString) {
+//        List<Path> files = new ArrayList<>();
+//        try (Stream<Path> walk = Files.walk(path)) {
+//            files = walk
+//                    .filter(f -> f.toString().endsWith(extension))
+//                    .filter(f -> isFileContains(f, searchString))
+//                    .collect(Collectors.toList());
+//            files.forEach(System.out::println); //todo delete this
+//            return files;
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return files;
+//    }
 
 
     private boolean isFileContains(Path path, String searchString) {
