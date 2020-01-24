@@ -9,7 +9,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -44,16 +46,16 @@ public class Controller {
         }
     }
 
-    public void find(){
-        buildDirectoriesTree();
+    public void find() {
         showDirectoriesTree();
     }
 
     public void showDirectoriesTree() {
-        List<TreeItem<String>> directories = buildDirectoriesTree();
-        TreeItem<String> rootItem = new TreeItem<>();
-        if (rootDirectory != null) rootItem.setValue(rootDirectory.getName());
-        rootItem.getChildren().addAll(directories);
+//        List<TreeItem<String>> directories = buildDirectoriesTree();
+        TreeItem<String> rootItem = getTreeItem(rootDirectory.getAbsolutePath(), getFiles(pathField.getText(), extensionField.getText(), searchArea.getText()));
+//        if (rootDirectory != null) rootItem.setValue(rootDirectory.getName());
+//        rootItem.getChildren().addAll(directories);
+
         directoriesTree.setRoot(rootItem);
     }
 
@@ -61,6 +63,27 @@ public class Controller {
         List<String> list = getFiles(pathField.getText(), extensionField.getText(), searchArea.getText());
         List<TreeItem<String>> treeItems = new ArrayList<>();
         list.forEach(f -> treeItems.add(new TreeItem<>(f)));
+        return treeItems;
+    }
+
+    public TreeItem<String> getTreeItem(String root, List<String> files) {
+        String[] tokens = root.split("/");
+        String rootName = tokens[tokens.length - 1];
+        TreeItem<String> item = new TreeItem<>(rootName);
+        item.getChildren().addAll(findAllInDirectories(root, files));
+        return item;
+    }
+
+    public List<TreeItem<String>> findAllInDirectories(String root, List<String> files) {
+        List<TreeItem<String>> treeItems = new ArrayList<>();
+        Set<String> set = new HashSet<>();
+        for (String f : files) {
+            String s = f.replace(root + "/", "");
+            set.add(s.split("/")[0]);
+        }
+        for (String s : set) {
+            treeItems.add(new TreeItem<>(s));
+        }
         return treeItems;
     }
 
@@ -80,13 +103,13 @@ public class Controller {
         return files;
     }
 
-    private boolean isFileContains(String file, String searchString){
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));){
+    private boolean isFileContains(String file, String searchString) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));) {
             String strLine;
-            while ((strLine = reader.readLine()) != null){
+            while ((strLine = reader.readLine()) != null) {
                 if (strLine.contains(searchString)) return true;
             }
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return false;
