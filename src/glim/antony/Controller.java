@@ -2,6 +2,8 @@ package glim.antony;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
 
 import java.io.*;
@@ -37,6 +39,9 @@ public class Controller {
 
     @FXML
     TreeView directoriesTree;
+
+    private Image closeFolder = new Image(getClass().getResourceAsStream("resources/folder-icon.png"));
+    private Image textDocument = new Image(getClass().getResourceAsStream("resources/text-icon.png"));
 
     private File rootDirectory;
     private String extension = ".log";
@@ -77,9 +82,11 @@ public class Controller {
         for (File file : folder.listFiles()) {
             TreeItem<Path> treeItem = new TreeItem<>(file.toPath());
             if (file.isDirectory()) {
+                treeItem.setGraphic(new ImageView(closeFolder));
                 item.getChildren().add(treeItem);
                 getFileTreeByRecursion(file.toPath(), treeItem);
             } else if (file.toString().endsWith(extension) && isFileContains(file.toPath(), searchString)){
+                treeItem.setGraphic(new ImageView(textDocument));
                 item.getChildren().add(treeItem);
             }
         }
