@@ -5,18 +5,14 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.DirectoryChooser;
 
 import java.io.*;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Controller {
 
@@ -25,6 +21,12 @@ public class Controller {
 
     @FXML
     Button find;
+
+    @FXML
+    Button previous;
+
+    @FXML
+    Button next;
 
     @FXML
     TextField pathField;
@@ -36,7 +38,7 @@ public class Controller {
     TextArea searchArea;
 
     @FXML
-    TextArea fileTextArea;
+    TextFlow textFlow;
 
     @FXML
     TreeView directoriesTree;
@@ -47,6 +49,9 @@ public class Controller {
     private File rootDirectory;
     private String extension = ".log";
     private String searchString = "";
+
+    private int startSelectionIndex;
+    private int endSelectionIndex;
 
     public void browse() {
         DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -67,16 +72,30 @@ public class Controller {
         if (mouseClick.getClickCount() == 2){
             TreeItem<Path> item = (TreeItem<Path>)directoriesTree.getSelectionModel().getSelectedItem();
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(item.getValue().toFile())))) {
-                fileTextArea.clear();
+                textFlow.getChildren().clear();
                 String strLine;
                 while ((strLine = reader.readLine()) != null) {
-                    fileTextArea.appendText(strLine + "\n");
+                    Text text = new Text(strLine + "\n");
+                    textFlow.getChildren().add(text);
                 }
-                fileTextArea.selectRange(fileTextArea.getText().indexOf(searchString), fileTextArea.getText().indexOf(searchString) + searchString.length()); //todo delete this
+//                startSelectionIndex = fileTextArea.getText().indexOf(searchString);
+//                endSelectionIndex = startSelectionIndex + searchString.length();
+//                fileTextArea.selectRange(startSelectionIndex, endSelectionIndex); //todo delete this
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    @FXML
+    private void previous(){
+//        fileTextArea.selectRange(fileTextArea.getText());
+    }
+
+    @FXML
+    private void next(){
+//        int newStartIndex = fileTextArea.getText(endSelectionIndex, fileTextArea.getText().length() - 1).indexOf(searchString);
+//        fileTextArea.selectRange(newStartIndex, newStartIndex + searchString.length());
     }
 
     public void showDirectoriesTree() {
